@@ -46,6 +46,7 @@ def SummaryPlot(df, **kwargs):
     bands = kwargs.pop("bands", ['412', '443', '490', '510', '555', '670'])
     colors = kwargs.pop("colors", ['black', 'brown', 'blue', 'm', 'c',
                                    'orange', 'r'])
+    drawmargin = kwargs.pop("margin", False)
     savepath = kwargs.pop('savepath', None)
     title = kwargs.pop('title', None)
     f, ax = pl.subplots(figsize=(12, 7))
@@ -63,11 +64,13 @@ def SummaryPlot(df, **kwargs):
     ax.set_ylabel(r'uncertainty ($\rho$)', fontsize=17)
     ax.set_xlabel(r'$\lambda$', fontsize=18)
     ax.axvspan(412, 600, ymin=0, ymax=.5*ymaxScl, facecolor='gray', alpha=0.1)
-    ax.axvspan(412, 600, ymax=.4*ymaxScl, facecolor='gray', alpha=0.3)
     ax.axvspan(600, 700, ymax=1 * ymaxScl,
-               facecolor='gray', alpha=0.1, label='threshold')
-    ax.axvspan(600, 700, ymax=.8 * ymaxScl, facecolor='gray', alpha=0.3,
-               label='20% margin')
+               facecolor='gray', alpha=0.1, label='threshold') 
+    # 20% margin box, visible channel
+    if drawmargin:
+        ax.axvspan(412, 600, ymax=.4*ymaxScl, facecolor='gray', alpha=0.3)
+        ax.axvspan(600, 700, ymax=.8 * ymaxScl, facecolor='gray', alpha=0.3,
+                   label='20% margin')
     ax.axvspan(650, 700, ymax=gboxY, facecolor='gold', alpha=0.4,
                label='nflh ROI')
     expList = df.columns.tolist()
